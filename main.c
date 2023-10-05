@@ -8,8 +8,6 @@
 char *pathToDylib;
 
 void launchSC(char **argv) {
- pid_t pid;
- const char* args[] = {"Shortcuts", NULL};
  /* find resources folder */
  if (argv) {
   char *runPath = argv[0];
@@ -48,6 +46,8 @@ void launchSC(char **argv) {
      char *const *envp = ugh;
      /* copy dylibPath to envp */
      *ugh = dylibPath;
+     pid_t pid;
+     const char* args[] = {"Shortcuts", NULL};
      posix_spawn(&pid, SC_PATH, NULL, NULL, (char* const*)args, envp);
      return;
     }
