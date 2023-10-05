@@ -23,7 +23,8 @@
 #include <unistd.h>
 
 subsid_err SubsidiaryGenericHookMethodWithError(Class cls, SEL name, IMP imp, IMP *orig) {
- if (!cls || !name || !imp) {
+ /* we shouldn't need to check cls or name since those should take us to Subsid_NoSel. This does mean that we would have a different error type, but in Unsigncuts we shouldn't care about that */
+ if (!imp) {
   return Subsid_InvalidArgs;
  }
  Method hookMethod = class_getInstanceMethod(cls, name);
