@@ -24,17 +24,32 @@ void launchSC(char **argv) {
   fprintf(stderr,"Unsigncuts Error: No argv present??\n");
   exit(1);
  }
- pathToDylib = find_resource("mod.dylib");
+ /* find_resource */
+ char *resource = "mod.dylib";
+ int resPathLen = strlen(resourcesPath);
+ char *pathToDylib;
+ pathToDylib = malloc(sizeof(char) * (resPathLen + 10));
+ /* Copy resourcesPath to pathToDylib */
+ for (int i = 0; i < resPathLen; i++) {
+  pathToDylib[i] = resourcesPath[i];
+ }
+ /* Copy resource to pathToDylib */
+ for (int i = 0; i < 9; i++) {
+  pathToDylib[i+resPathLen] = resource[i];
+ }
+ int pathToDylibLen = 9+resPathLen;
+ pathToDylib[pathToDylibLen] = '\0';
  free(resourcesPath);
  if (!pathToDylib) {
   fprintf(stderr,"Unsigncuts Error: could not find mod.dylib\n");
   exit(1);
  }
- char* dylibPath = malloc(sizeof(char *) + 22 + strlen(pathToDylib) + 1); /* +1 bc null byte, 22 for DYLD_INSERT_LIBRARIES= */
+ unsigned int dylibPathLen = pathToDylibLen + 23; /* +1 bc null byte, 22 for DYLD_INSERT_LIBRARIES= */
+ char* dylibPath = malloc(sizeof(char) * dylibPathLen);
  strncat(dylibPath, "DYLD_INSERT_LIBRARIES=", 22);
- strncat(dylibPath, pathToDylib, strlen(pathToDylib));
+ strncat(dylibPath, pathToDylib, pathToDylibLen);
  free(pathToDylib);
- char **ugh = malloc(sizeof(char *) * strlen(dylibPath) + 1);
+ char **ugh = malloc(sizeof(char *) * dylibPathLen);
  char *const *envp = ugh;
  /* copy dylibPath to envp */
  *ugh = dylibPath;

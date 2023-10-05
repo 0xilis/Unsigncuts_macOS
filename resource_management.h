@@ -21,6 +21,5 @@
 char *resourcesPath;
 
 char *find_resource_path(char* runPath);
-char *find_resource(char* resource);
 
 #endif /* RESOURCE_MANAGEMENT_H */

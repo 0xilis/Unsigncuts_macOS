@@ -34,19 +34,3 @@ char *find_resource_path(char* runPath) {
   fprintf(stderr, "Unsigncuts Error: Unable to find resource path\n");
   exit(1);
 }
-
-char *find_resource(char* resource) {
-  int resPathLen = strlen(resourcesPath);
-  int resLen = strlen(resource);
-  char *newResourcesPath = malloc(sizeof(char) * (resLen + resPathLen + 1));
-  /* Copy resourcesPath to newResourcesPath */
-  for (int i = 0; i < resPathLen; i++) {
-    newResourcesPath[i] = resourcesPath[i];
-  }
-  /* Copy resource to newResourcesPath */
-  for (int i = 0; i < resLen; i++) {
-    newResourcesPath[i+resPathLen] = resource[i];
-  }
-  newResourcesPath[resLen+resPathLen] = '\0';
-  return newResourcesPath;
-}
