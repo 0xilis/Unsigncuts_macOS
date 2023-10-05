@@ -4,7 +4,6 @@
 #include <string.h> /* strlen() */
 
 #include "libsubsidiary/libsubsidiary.h"
-#include "libsubsidiary/backwardsCompat.h"
 
 #include <objc/runtime.h>
 #include <objc/message.h>
