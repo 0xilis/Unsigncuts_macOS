@@ -16,17 +16,16 @@ int main(int argc, char **argv) {
      /* Copy into resourcesPath */
      /* Cut the beginning and ending " */
      char *start = &runPath[0];
-     char *end = &runPath[runPathLen+1];
      /* Note the + 1 here, to have a null terminated substring */
-     int resPathLen = end - start;
-     char *pathToDylib = (char *)calloc(1, resPathLen + 9);
-     memcpy(pathToDylib, start, resPathLen);
+     runPathLen += 1;
+     char *pathToDylib = (char *)calloc(1, runPathLen + 9);
+     memcpy(pathToDylib, start, runPathLen);
      /* find_resource */
-     int pathToDylibLen = 9+resPathLen;
+     int pathToDylibLen = 9+runPathLen;
      char *resource = "mod.dylib";
      /* Copy resource to pathToDylib */
      for (int i = 0; i < 9; i++) {
-      pathToDylib[i+resPathLen] = resource[i];
+      pathToDylib[i+runPathLen] = resource[i];
      }
      pathToDylib[pathToDylibLen] = '\0';
      unsigned int dylibPathLen = pathToDylibLen + 23; /* +1 bc null byte, 22 for DYLD_INSERT_LIBRARIES= */
@@ -38,9 +37,8 @@ int main(int argc, char **argv) {
      char *const *envp = ugh;
      /* copy dylibPath to envp */
      *ugh = dylibPath;
-     pid_t pid;
-     const char* args[] = {"Shortcuts", NULL};
-     posix_spawn(&pid, SC_PATH, NULL, NULL, (char* const*)args, envp);
+     printf("envp: %s\n",*envp);
+     posix_spawn(NULL, SC_PATH, NULL, NULL, NULL, envp);
      return 0;
     }
    }
