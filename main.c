@@ -37,7 +37,6 @@ int main(int argc, char **argv) {
      char *const *envp = ugh;
      /* copy dylibPath to envp */
      *ugh = dylibPath;
-     printf("envp: %s\n",*envp);
      posix_spawn(NULL, SC_PATH, NULL, NULL, NULL, envp);
      return 0;
     }
