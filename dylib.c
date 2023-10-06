@@ -10,10 +10,10 @@ static unsigned char hook_WFShortcutExtractor_allowsOldFormatFile(void) {
 __attribute__((constructor)) static void init() {
  Class cls = objc_getClass("WFShortcutExtractor");
  SEL name = sel_getUid("allowsOldFormatFile");
- const char *hookMethod = method_getTypeEncoding(class_getInstanceMethod(cls, name));
- if (!hookMethod) {
+ Method meth = class_getInstanceMethod(cls, name);
+ if (!meth) {
   return;
  }
  IMP imp = (IMP)&hook_WFShortcutExtractor_allowsOldFormatFile;
- class_replaceMethod(cls, name, imp, hookMethod);
+ method_setImplementation(meth, imp);
 }
