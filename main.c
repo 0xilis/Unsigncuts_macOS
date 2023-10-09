@@ -24,19 +24,25 @@ int main(int argc, char **argv) {
      int pathToDylibLen = 9+runPathLen;
      char *resource = "mod.dylib";
      /* Copy resource to pathToDylib */
-     for (int i = 0; i < 9; i++) {
-      pathToDylib[i+runPathLen] = resource[i];
-     }
+     /*
+      * Ugly hack coming up that saves a few jumps. hacky_optimized_for_loop is equiv to
+      * for (int i = 0; i < 9; i++) {
+      *  pathToDylib[i+runPathLen] = resource[i];
+      * }
+     */
+     int i = 0;
+     hacky_optimized_for_loop:
+     pathToDylib[i+runPathLen] = resource[i];
+     i++;
+     if (i != 9) { goto hacky_optimized_for_loop; };
      pathToDylib[pathToDylibLen] = '\0';
      unsigned int dylibPathLen = pathToDylibLen + 23; /* +1 bc null byte, 22 for DYLD_INSERT_LIBRARIES= */
      char* dylibPath = malloc(sizeof(char) * dylibPathLen);
      strncat(dylibPath, "DYLD_INSERT_LIBRARIES=", 22);
      strncat(dylibPath, pathToDylib, pathToDylibLen);
      free(pathToDylib);
-     char **ugh = malloc(sizeof(char *) * dylibPathLen);
-     char *const *envp = ugh;
-     /* copy dylibPath to envp */
-     *ugh = dylibPath;
+     /* dunno how this works but it does */
+     char *const *envp = &dylibPath;
      posix_spawn(NULL, SC_PATH, NULL, NULL, NULL, envp);
      return 0;
     }
