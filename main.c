@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
    char *pathToDylib = (char *)malloc(runPathLen + 9);
    memcpy(pathToDylib, start, runPathLen);
    /* find_resource */
-   int pathToDylibLen = 9+runPathLen;
+   unsigned int pathToDylibLen = 9+runPathLen;
    char *resource = "mod.dylib";
    /* Copy resource to pathToDylib */
    #if __x86_64__
