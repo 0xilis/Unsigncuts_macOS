@@ -59,13 +59,13 @@ int main(int argc, char **argv) {
    #endif
   } else {
    fprintf(stderr,"Unsigncuts Error: argv[0] returned NULL\n");
-   exit(1);
+   return 1;
   }
  } else {
   fprintf(stderr,"Unsigncuts Error: No argv present??\n");
-  exit(1);
+  return 1;
  }
  res_err:
  fprintf(stderr, "Unsigncuts Error: Unable to find resource path\n");
- exit(1);
+ return 1;
 }
