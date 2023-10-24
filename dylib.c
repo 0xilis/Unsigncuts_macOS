@@ -2,9 +2,17 @@
 
 typedef struct objc_selector *SEL;
 
+#define ALLOW_INLINE_ASM 1
+
+#if __x86_64__ && ALLOW_INLINE_ASM
+__attribute((naked, used)) static unsigned char hook_WFShortcutExtractor_allowsOldFormatFile(void) {
+ asm ("mov $1, %eax; ret;");
+}
+#else
 static unsigned char hook_WFShortcutExtractor_allowsOldFormatFile(void) {
  return 0x1;
 }
+#endif
 
 __attribute__((constructor)) static void init() {
  Class cls = objc_getClass("WFShortcutExtractor"); /* wrapper around look_up_class */
